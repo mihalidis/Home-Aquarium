@@ -5,6 +5,10 @@ import { addWaterOverlay, animateWaterOverlay } from './addWaterOverlay'
 import { addFishes, animateFishes } from './addFishes'
 import { sound } from '@pixi/sound'
 
+import backgroundImage from '/images/inside-pond.png'
+import aquariumSound from '/audio/aquarium-sound.mp3'
+import defaultFishImage from '/images/default_fish.png'
+
 const app = new Application()
 const fishList = []
 
@@ -31,18 +35,18 @@ async function preload(store) {
   const { imageAddedFishes } = store
 
   const assets = [
-    { alias: 'background', src: './src/assets/pixi/inside-pond.png' },
+    { alias: 'background', src: backgroundImage },
     { alias: 'overlay', src: 'https://pixijs.com/assets/tutorials/fish-pond/wave_overlay.png' },
     {
       alias: 'displacement',
       src: 'https://pixijs.com/assets/tutorials/fish-pond/displacement_map.png',
     },
-    { alias: 'waterAmbience', src: './src/assets/pixi/aquarium-sound.mp3' },
+    { alias: 'waterAmbience', src: aquariumSound },
   ]
 
   const fishAssets = imageAddedFishes.map((fish, index) => ({
     alias: `fish${index + 1}`,
-    src: index > 4 ? './src/assets/pixi/default_fish.png' : fish.image,
+    src: index > 4 ? defaultFishImage : fish.image,
   }))
 
   assets.push(...fishAssets)

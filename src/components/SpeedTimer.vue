@@ -89,6 +89,7 @@ onUnmounted(() => {
     background-color: var(--buff);
     color: var(--smoky-black);
     font-weight: 600;
+    width: 180px;
   }
 
   .el-dropdown {

@@ -7,7 +7,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
   const fishes = ref([])
   const isLoading = ref(false)
   const currentTime = ref(moment())
-
+  
   const imageAddedFishes = computed(() => {
     const currentDate = new Date().toISOString().split('T')[0].split('-').reverse().join('.')
 
@@ -17,7 +17,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
         ...fish.feedingSchedule,
         lastFeed: `${currentDate} ${fish.feedingSchedule.lastFeed}`,
       },
-      image: `./src/assets/pixi/fish${fish.id}.png`,
+      image: `/src/assets/pixi/fish${fish.id}.png`,
     }))
   })
 
