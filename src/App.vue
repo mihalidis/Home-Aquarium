@@ -22,7 +22,7 @@ onMounted(async () => {
 <template>
   <SpeedTimer />
   <div class="pond-wrapper">
-    <img class="akvaryum" src="/images/fish-pond-background.png" alt="fish pond background">
+    <img class="akvaryum" src="/src/assets/pixi/fish-pond-background.png" alt="fish pond background">
     <div class="pond-scene" />
   </div>
   <div v-if="showTable" class="fish-pond-table-wrapper">
