@@ -13,6 +13,7 @@ const speedLabel = ref(`${speed.value}x`)
 const updateSpeed = (newSpeed) => {
   speed.value = Number(newSpeed)
   speedLabel.value = `${newSpeed}x`
+  store.setSpeed(newSpeed)
   resetInterval()
 }
 
@@ -85,8 +86,8 @@ onUnmounted(() => {
     gap: 4px;
     border: 2px solid var(--smoky-black);
     padding: 6px 8px;
-    border-radius: 8px;
-    background-color: var(--buff);
+    border-radius: 12px;
+    background-color: var(--color-base-background);
     color: var(--smoky-black);
     font-weight: 600;
     width: 180px;
@@ -95,8 +96,8 @@ onUnmounted(() => {
   .el-dropdown {
     border: 2px solid var(--smoky-black);
     padding: 6px 8px;
-    border-radius: 8px;
-    background-color: var(--buff);
+    border-radius: 12px;
+    background-color: var(--color-base-background);
     color: var(--smoky-black);
     font-weight: 600;
     cursor: pointer;
