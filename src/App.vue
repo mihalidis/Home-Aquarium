@@ -9,9 +9,7 @@ import SpeedTimer from './components/SpeedTimer.vue'
 
 const store = useFishPondStore()
 
-const showTable = computed(() => 
-  !store.isLoading && store.imageAddedFishes.length > 0
-)
+const showTable = computed(() => !store.isLoading && store.formattedFishes.length > 0)
 
 onMounted(async () => {
   await store.fetchPondFishes()
@@ -22,7 +20,11 @@ onMounted(async () => {
 <template>
   <SpeedTimer />
   <div class="pond-wrapper">
-    <img class="akvaryum" src="/src/assets/pixi/fish-pond-background.png" alt="fish pond background">
+    <img
+      class="akvaryum"
+      src="/src/assets/pixi/fish-pond-background.png"
+      alt="fish pond background"
+    />
     <div class="pond-scene" />
   </div>
   <div v-if="showTable" class="fish-pond-table-wrapper">

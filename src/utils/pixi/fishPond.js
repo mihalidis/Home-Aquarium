@@ -29,7 +29,7 @@ async function setup() {
 }
 
 async function preload(store) {
-  const { imageAddedFishes } = store
+  const { formattedFishes } = store
 
   const assets = [
     { alias: 'background', src: '/src/assets/pixi/inside-pond.png' },
@@ -41,7 +41,7 @@ async function preload(store) {
     { alias: 'waterAmbience', src: '/src/assets/pixi/aquarium-sound.mp3' },
   ]
 
-  const fishAssets = imageAddedFishes.map((fish, index) => ({
+  const fishAssets = formattedFishes.map((fish, index) => ({
     alias: `fish${index + 1}`,
     src: index > 4 ? '/src/assets/pixi/default_fish.png' : fish.image,
   }))
@@ -60,9 +60,7 @@ export async function fishPond(store) {
     volume: 0.4,
   })
 
-  watch(
-    () => store.currentSpeed
-  )
+  watch(() => store.currentSpeed)
 
   addBackground(app)
   addFishes(app, fishList)

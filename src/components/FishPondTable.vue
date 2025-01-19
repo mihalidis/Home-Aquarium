@@ -2,43 +2,88 @@
 import { computed } from 'vue'
 import { useFishPondStore } from '@/stores/fishPondStore'
 import { calculateTimeDifference } from '@/utils/helper'
+import { HEALTH_STATUS } from '@/constants/enum'
 
 const store = useFishPondStore()
-const { imageAddedFishes } = store
+const { formattedFishes, feedFish } = store
+
+const filterHealthStatus = (value, row) => {
+  return row.healthStatus === value
+}
+
+const healthStatusColor = (status) => {
+  switch (status) {
+    case HEALTH_STATUS.GOOD:
+      return 'success'
+    case HEALTH_STATUS.STANDART:
+      return 'warning'
+    case HEALTH_STATUS.POOR:
+      return 'danger'
+    case HEALTH_STATUS.DEAD:
+      return 'info'
+    default:
+      return 'info'
+  }
+}
 
 const handleFeedFish = (index, row) => {
-  console.log(index, row)
+  feedFish(row.id)
+}
+
+const feedTimeText = (time) => {
+  if (time === 0) return 'Yeni beslendi'
+
+  return `${time} saat önce`
 }
 
 const currentTime = computed(() => store.formattedTime)
 
-const tableData = computed(() => 
-  imageAddedFishes.map(fish => ({
+const tableData = computed(() =>
+  formattedFishes.map((fish) => ({
+    id: fish.id,
     name: fish.name,
     type: fish.type,
     weight: fish.weight,
-    lastFeed: `${Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours)} saat önce`,
-    health: "iyi"
-  }))
+    lastFeed: feedTimeText(Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours)),
+    healthStatus: fish.healthStatus,
+  })),
 )
 </script>
 
 <template>
-  <el-table class="fish-pond-table"
-            row-class-name="fish-rows"
-            :data="tableData"
-            style="width: 100%"
+  <el-table
+    class="fish-pond-table"
+    row-class-name="fish-rows"
+    :data="tableData"
+    style="width: 100%"
   >
-    <el-table-column label="Adı" sortable  prop="name" />
-    <el-table-column label="Türü" sortable  prop="type" />
-    <el-table-column label="Ağırlığı" sortable  prop="weight" />
-    <el-table-column label="Beslenme" sortable  prop="lastFeed" />
-    <el-table-column label="Sağlık" sortable  prop="health" />
+    <el-table-column label="Adı" sortable prop="name" />
+    <el-table-column label="Türü" sortable prop="type" />
+    <el-table-column label="Ağırlığı" sortable prop="weight" />
+    <el-table-column label="Beslenme" sortable prop="lastFeed" />
+    <el-table-column
+      prop="healthStatus"
+      label="Sağlık"
+      :filters="[
+        { text: HEALTH_STATUS.GOOD, value: HEALTH_STATUS.GOOD },
+        { text: HEALTH_STATUS.STANDART, value: HEALTH_STATUS.STANDART },
+        { text: HEALTH_STATUS.POOR, value: HEALTH_STATUS.POOR },
+        { text: HEALTH_STATUS.DEAD, value: HEALTH_STATUS.DEAD }
+      ]"
+      :filter-method="filterHealthStatus"
+      filter-placement="bottom-end"
+    >
+      <template #default="scope">
+        <el-tag
+          :type="healthStatusColor(scope.row.healthStatus)"
+          disable-transitions
+          >{{ scope.row.healthStatus }}</el-tag
+        >
+      </template>
+    </el-table-column>
     <el-table-column label="İşlem">
       <template #default="scope">
-        <el-button size="small" @click="handleFeedFish(scope.$index, scope.row)" style="width: 100%">
-          Besle
-        </el-button>
+        <el-button size="small" @click="handleFeedFish(scope.$index, scope.row)"> Besle </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -62,7 +107,7 @@ const tableData = computed(() =>
               background-color: var(--color-table-background);
               color: var(--smoky-black);
               font-weight: 600;
-              border-bottom:  1px solid var(--smoky-black);
+              border-bottom: 1px solid var(--smoky-black);
 
               .cell {
                 color: var(--smoky-black);
@@ -81,7 +126,7 @@ const tableData = computed(() =>
         background-color: var(--color-table-background);
         color: var(--smoky-black);
         font-weight: 600;
-        border-bottom:  1px solid var(--smoky-black);
+        border-bottom: 1px solid var(--smoky-black);
       }
     }
   }
