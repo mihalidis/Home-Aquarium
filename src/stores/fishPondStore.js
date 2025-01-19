@@ -3,11 +3,18 @@ import { defineStore } from 'pinia'
 import { fetchFishes } from '../config/api.js'
 import moment from 'moment'
 
+import Fish1 from '/public/images/Fish1.png'
+import Fish2 from '/public/images/Fish2.png'
+import Fish3 from '/public/images/Fish3.png'
+import Fish4 from '/public/images/Fish4.png'
+import Fish5 from '/public/images/Fish5.png'
+
 export const useFishPondStore = defineStore('fishPond', () => {
   const fishes = ref([])
   const isLoading = ref(false)
   const currentTime = ref(moment())
-  
+  const fishImages = [Fish1, Fish2, Fish3, Fish4, Fish5]
+
   const imageAddedFishes = computed(() => {
     const currentDate = new Date().toISOString().split('T')[0].split('-').reverse().join('.')
 
@@ -17,7 +24,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
         ...fish.feedingSchedule,
         lastFeed: `${currentDate} ${fish.feedingSchedule.lastFeed}`,
       },
-      image: `/src/assets/pixi/fish${fish.id}.png`,
+      image: fishImages[fish.id - 1],
     }))
   })
 
