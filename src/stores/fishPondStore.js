@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { fetchFishes } from '../config/api.js'
 import { TIME_SPEEDS, HEALTH_STATUS } from '@/constants/enum'
@@ -28,10 +28,12 @@ export const useFishPondStore = defineStore('fishPond', () => {
         feedingSchedule: {
           ...fish.feedingSchedule,
           lastFeed: moment(currentTime.value).format('DD.MM.YYYY HH:mm'),
-          nextFeed: moment(currentTime.value).add(fish.feedingSchedule.intervalInHours, 'hours').format('DD.MM.YYYY HH:mm'),
+          nextFeed: moment(currentTime.value)
+            .add(fish.feedingSchedule.intervalInHours, 'hours')
+            .format('DD.MM.YYYY HH:mm'),
           feedCount: 1,
           dailyFeedAmount: fish.weight / 100,
-          dailyFeedCount: 24 / fish.feedingSchedule.intervalInHours
+          dailyFeedCount: 24 / fish.feedingSchedule.intervalInHours,
         },
         image: `/src/assets/pixi/fish${fish.id}.png`,
         healthStatus: HEALTH_STATUS.STANDART,
@@ -94,6 +96,24 @@ export const useFishPondStore = defineStore('fishPond', () => {
   const setTooltipData = (data) => {
     tooltipData.value = data
   }
+
+  // watch
+  watch(currentTime, (newTime) => {
+    fishes.value = fishes.value.map((fish) => {
+      const now = moment(newTime)
+      const lastFedTime = moment(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
+      const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hours')
+
+      if (now.isAfter(moment(nextFeedTime).add(10, 'minutes')) && fish.healthStatus !== HEALTH_STATUS.DEAD) {
+        return {
+          ...fish,
+          healthStatus: decreaseHealthStatus(fish.healthStatus),
+        }
+      }
+
+      return fish
+    })
+  })
 
   return {
     fishes,

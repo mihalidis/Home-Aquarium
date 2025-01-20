@@ -5,7 +5,6 @@ import { calculateTimeDifference } from '@/utils/helper'
 import { HEALTH_STATUS } from '@/constants/enum'
 
 const store = useFishPondStore()
-const { formattedFishes, feedFish } = store
 
 const healthStatusColor = (status) => {
   switch (status) {
@@ -23,7 +22,7 @@ const healthStatusColor = (status) => {
 }
 
 const handleFeedFish = (index, row) => {
-  feedFish(row.id)
+  store.feedFish(row.id)
 }
 
 const feedTimeText = (time) => {
@@ -35,7 +34,7 @@ const feedTimeText = (time) => {
 const currentTime = computed(() => store.formattedTime)
 
 const tableData = computed(() =>
-  formattedFishes.map((fish) => ({
+  store.formattedFishes.map((fish) => ({
     id: fish.id,
     name: fish.name,
     type: fish.type,
@@ -80,7 +79,7 @@ const tableData = computed(() =>
     </el-table-column>
     <el-table-column label="İşlem">
       <template #default="scope">
-        <el-button size="small" @click="handleFeedFish(scope.$index, scope.row)"> Besle </el-button>
+        <el-button size="small" :disabled="scope.row.healthStatus === HEALTH_STATUS.DEAD" @click="handleFeedFish(scope.$index, scope.row)"> Besle </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -146,6 +145,20 @@ const tableData = computed(() =>
     font-size: 12px;
     color: var(--white);
     font-weight: 600;
+  }
+
+  &.is-disabled {
+    background-color: var(--button-normal);
+    background-image: none;
+    border-color: var(--button-normal);
+    color: var(--whiter);
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: var(--button-normal);
+      border: 1px solid var(--button-normal);
+    }
   }
 
   &:hover {
