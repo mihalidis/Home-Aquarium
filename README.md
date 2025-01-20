@@ -28,7 +28,7 @@ Akvaryumdaki balıklar kullanıcı tarafından manuel olarak beslenir. Balıklar
 
 ## Yazar
 
-- Linkedin: [Pınar Suvaçoğlu](https://www.linkedin.com/in/pinarsuvacoglu/)
+- [Pınar Suvaçoğlu](https://www.linkedin.com/in/pinarsuvacoglu/)
 
 ## Proje Kurulumu
 
