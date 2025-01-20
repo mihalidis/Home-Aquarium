@@ -1,14 +1,33 @@
 # 2f65509b2eee2392b2c8ae27330f0eb7
 
-This template should help get you started developing with Vue 3 in Vite.
+# Akvaryum Takibi Uygulaması
+  ![](https://i.ibb.co/HzH5p2S/HOME-AQUARIUM.png)
 
-## Recommended IDE Setup
+  Akvaryum Takibi Uygulaması, hayali bir akvaryumdaki balıkların türlerini, isimlerini, ağırlıklarını ve sağlık durumlarını kolayca takip edebilmeniz ve onları beslemeniz için geliştirilmiştir.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## İçindekiler
+- [Overview](#overview)
+    - [Screenshot](#screenshot)
+- [Built with](#built-with)
+- [Author](#author)
+- [Project Setup](#Project-Setup)
 
-## Customize configuration
+## Overview
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Balıkların beslenme süreleri manuel olarak yönetilir ve ideal beslenme aralıklarına uygun hareket edilmesi balıkların sağlığını olumlu yönde etkiler. Uygulama, balıkların sağlıklı bir yaşam sürdürebilmeleri için gerekli beslenme düzenini sağlarken, yanlış veya gecikmiş beslenmenin sonuçlarını gözler önüne serer. Bu uygulama ile eğlenceli bir şekilde balıkların sağlık durumlarını ve beslenme takvimlerini kontrol edebilirsiniz.
+
+### Screenshot
+  ![](https://i.ibb.co/gD6WRN0/awuarium-screenshot.png)
+### Built with
+
+- [Vue3](https://vuejs.org/)
+- [Pinia](https://pinia.vuejs.org/)
+- [Pixi.js](https://pixijs.com/)
+- [Element+ UI](https://element-plus.org/en-US/)
+
+## Author
+
+- Linkedin: [Pınar Suvaçoğlu](https://www.linkedin.com/in/pinarsuvacoglu/)
 
 ## Project Setup
 
