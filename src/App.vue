@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted, computed, useTemplateRef, ref } from 'vue'
 import { useFishPondStore } from '@/stores/fishPondStore'
-import { fishPond } from '@/utils/pixi/fishPond.js'
+// Utils
+import { createFishPond } from '@/utils/pixi/fishPond.js'
 import eventBus from '@/utils/eventBus';
-
-// components
+// Components
 import FishPondTable from './components/FishPondTable.vue'
 import SpeedTimer from './components/SpeedTimer.vue'
 import FishCard from './components/FishCard.vue'
@@ -23,10 +23,10 @@ const handleCloseTooltipModal = () => {
 
 onMounted(async () => {
   await store.fetchPondFishes()
-  fishPond(store)
+  createFishPond(store)
 
   eventBus.on('SHOW_TOOL_TIP', (data) => {
-    const shouldShowTooltip = (!store.currentTooltipData && tooltipElement.value && store.currentTooltipData?.id !== data.fish.id);
+    const shouldShowTooltip = (!store.currentTooltipData && tooltipElement.value) || (store.currentTooltipData?.id !== data.fish.id);
 
     if (shouldShowTooltip) {
       store.setTooltipData(data.fish);

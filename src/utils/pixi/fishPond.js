@@ -50,7 +50,7 @@ async function preload(store) {
   await Assets.load(assets)
 }
 
-export async function fishPond(store) {
+export async function createFishPond(store) {
   await setup()
   await preload(store)
 
