@@ -31,8 +31,6 @@ const feedTimeText = (time) => {
   return `${time} saat önce`
 }
 
-const currentTime = computed(() => store.formattedTime)
-
 const tableData = computed(() =>
   store.formattedFishes.map((fish) => ({
     id: fish.id,
@@ -40,7 +38,7 @@ const tableData = computed(() =>
     type: fish.type,
     weight: fish.weight,
     image: fish.image,
-    lastFeed: feedTimeText(Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours)),
+    lastFeed: feedTimeText(Math.round(calculateTimeDifference(store.formattedTime, fish.feedingSchedule.lastFeed).hours)),
     healthStatus: fish.healthStatus,
   })),
 )

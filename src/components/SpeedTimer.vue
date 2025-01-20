@@ -5,29 +5,32 @@ import { useFishPondStore } from '@/stores/fishPondStore'
 import moment from 'moment'
 
 const store = useFishPondStore()
-const interval = ref(null)
+const pondSpeedInterval = ref(null)
 const speedLabel = ref(`${store.currentSpeed}x`)
 
 const updateSpeed = (newSpeed) => {
   speedLabel.value = `${newSpeed}x`
+
   store.setSpeed(newSpeed)
-  resetInterval()
+
+  resetPondSpeedInterval()
 }
 
-const resetInterval = () => {
-  if (interval.value) clearInterval(interval.value)
-  interval.value = setInterval(() => {
+const resetPondSpeedInterval = () => {
+  if (pondSpeedInterval.value) clearInterval(pondSpeedInterval.value)
+
+  pondSpeedInterval.value = setInterval(() => {
     const secondsToAdd = store.currentSpeed / 10
     store.updateTime(moment(store.currentTime).add(secondsToAdd, 'seconds'))
   }, 100)
 }
 
 onMounted(() => {
-  resetInterval()
+  resetPondSpeedInterval()
 })
 
 onUnmounted(() => {
-  if (interval.value) clearInterval(interval.value)
+  if (pondSpeedInterval.value) clearInterval(pondSpeedInterval.value)
 })
 </script>
 
@@ -68,42 +71,42 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .timer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 2rem;
+  background-color: var(--color-background);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  position: fixed;
-  right: 0;
-  left: 0;
-  top: 0;
-  background-color: var(--color-background);
-  padding: 16px 2rem 16px;
-  max-width: 1280px;
-  margin: 0 auto;
-  z-index: 2;
 
   .digital-clock {
     display: flex;
     align-items: center;
     gap: 4px;
-    border: 2px solid var(--smoky-black);
+    width: 180px;
     padding: 6px 8px;
+    border: 2px solid var(--smoky-black);
     border-radius: 12px;
     background-color: var(--color-base-background);
     color: var(--smoky-black);
     font-weight: 600;
-    width: 180px;
   }
 
   .el-dropdown {
-    border: 2px solid var(--smoky-black);
+    width: 110px;
     padding: 6px 8px;
+    border: 2px solid var(--smoky-black);
     border-radius: 12px;
     background-color: var(--color-base-background);
     color: var(--smoky-black);
     font-weight: 600;
     cursor: pointer;
-    width: 110px;
 
     .el-dropdown-link {
       width: 100%;

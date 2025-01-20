@@ -61,8 +61,7 @@ export function animateFishes(app, fishes, time, formattedFishes) {
     [TIME_SPEEDS.HOUR_SPEED]: 30,
   }
 
-  const speedDivider = speedDividers[time.speed] || 1
-  const adjustedSpeed = time.speed / speedDivider
+  const adjustedSpeed = time.speed / (speedDividers[time.speed] || 1)
 
   fishes.forEach((fish, index) => {
     if (formattedFishes[index].healthStatus === HEALTH_STATUS.DEAD) {

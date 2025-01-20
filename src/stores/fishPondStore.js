@@ -55,7 +55,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
 
   const feedFish = (fishId) => {
     const fish = fishes.value.find((f) => f.id === fishId)
-    console.log('Balık besleniyor:', fish.name)
+
     if (!fish) return
 
     const now = moment(currentTime.value)
@@ -63,9 +63,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
     const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hours')
 
     if (fish.feedingSchedule.feedCount > fish.feedingSchedule.dailyFeedCount) {
-      console.log('Balık fazla yemlendi ve durumunu bir kademe düşür.')
-      fish.feedingSchedule.lastFeed = String(formattedTime.value)
-      fish.feedingSchedule.feedCount++
+      updateFishFeedingSchedule(fish)
       fish.feedingSchedule.healthStatus = decreaseHealthStatus(fish.healthStatus)
       return
     }
@@ -78,18 +76,19 @@ export const useFishPondStore = defineStore('fishPond', () => {
     )
 
     if (feedIsWithinRange) {
-      console.log('Balık beslenme zamanı geldi.')
-      fish.feedingSchedule.lastFeed = String(formattedTime.value)
-      fish.feedingSchedule.feedCount++
+      updateFishFeedingSchedule(fish)
       fish.healthStatus = increaseHealthStatus(fish.healthStatus)
       return
     } else {
-      console.log('Balık beslenme zamanı değil.')
-      fish.feedingSchedule.lastFeed = String(formattedTime.value)
-      fish.feedingSchedule.feedCount++
+      updateFishFeedingSchedule(fish)
       fish.healthStatus = decreaseHealthStatus(fish.healthStatus)
       return
     }
+  }
+
+  const updateFishFeedingSchedule = (fish) => {
+    fish.feedingSchedule.lastFeed = String(formattedTime.value)
+    fish.feedingSchedule.feedCount++
   }
 
   const setTooltipData = (data) => {

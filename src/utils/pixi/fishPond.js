@@ -1,4 +1,3 @@
-import { watch } from 'vue'
 import { Application, Assets } from 'pixi.js'
 import { addBackground } from './addBackground'
 import { addDisplacementEffect } from './addDisplacementEffect'
@@ -58,8 +57,6 @@ export async function createFishPond(store) {
     loop: true,
     volume: 0.4,
   })
-
-  watch(() => store.currentSpeed)
 
   addBackground(app)
   addFishes(app, fishList, store.formattedFishes)

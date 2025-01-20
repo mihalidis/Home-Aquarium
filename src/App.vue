@@ -52,43 +52,41 @@ onMounted(async () => {
       </div>
     </div>
   </div>
-  <div v-if="showTable" class="fish-pond-table-wrapper">
-    <FishPondTable />
-  </div>
+  <FishPondTable v-if="showTable" />
 </template>
 
 <style lang="scss" scoped>
 .pond-wrapper {
   position: relative;
   width: 1200px;
-}
 
-.akvaryum {
-  width: 100%;
-}
-
-.pond-scene {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 169px;
-  left: 35px;
-  width: 1130px;
-  height: 388px;
-  border-radius: 18px;
-
-  canvas {
-    border-radius: 18px;
+  .akvaryum {
+    width: 100%;
   }
-}
 
-.tooltip {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
+  .pond-scene {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 169px;
+    left: 35px;
+    width: 1130px;
+    height: 388px;
+    border-radius: 18px;
+
+    canvas {
+      border-radius: 18px;
+    }
+  }
+
+  .tooltip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+  }
 }
 </style>
