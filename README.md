@@ -6,30 +6,31 @@
   Akvaryum Takibi Uygulaması, hayali bir akvaryumdaki balıkların türlerini, isimlerini, ağırlıklarını ve sağlık durumlarını kolayca takip edebilmeniz ve onları beslemeniz için geliştirilmiştir.
 
 ## İçindekiler
-- [Overview](#overview)
-    - [Screenshot](#screenshot)
-- [Built with](#built-with)
-- [Author](#author)
-- [Project Setup](#Project-Setup)
+- [Genel Bakış](#genel-bakış)
+    - [Ekran Görüntüsü](#ekran-görüntüsü)
+- [Kullanılan Teknolojiler](#kullanılan-teknolojiler)
+- [Yazar](#yazar)
+- [Proje Kurulumu](#proje-kurulumu)
 
-## Overview
+## Genel Bakış
 
 Balıkların beslenme süreleri manuel olarak yönetilir ve ideal beslenme aralıklarına uygun hareket edilmesi balıkların sağlığını olumlu yönde etkiler. Uygulama, balıkların sağlıklı bir yaşam sürdürebilmeleri için gerekli beslenme düzenini sağlarken, yanlış veya gecikmiş beslenmenin sonuçlarını gözler önüne serer. Bu uygulama ile eğlenceli bir şekilde balıkların sağlık durumlarını ve beslenme takvimlerini kontrol edebilirsiniz.
 
-### Screenshot
+### Ekran Görüntüsü
   ![](https://i.ibb.co/gD6WRN0/awuarium-screenshot.png)
-### Built with
 
-- [Vue3](https://vuejs.org/)
+### Kullanılan Teknolojiler
+
+- [Vue3 Composition API](https://vuejs.org/)
 - [Pinia](https://pinia.vuejs.org/)
 - [Pixi.js](https://pixijs.com/)
 - [Element+ UI](https://element-plus.org/en-US/)
 
-## Author
+## Yazar
 
 - Linkedin: [Pınar Suvaçoğlu](https://www.linkedin.com/in/pinarsuvacoglu/)
 
-## Project Setup
+## Proje Kurulumu
 
 ```sh
 npm install
