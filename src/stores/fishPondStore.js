@@ -70,15 +70,14 @@ export const useFishPondStore = defineStore('fishPond', () => {
       return
     }
 
-    // beslenme anı 10 dakika önce ve 10 dakika sonrası aralığında mı kontrolü
-    const isWithinRange = now.isBetween(
+    const feedIsWithinRange = now.isBetween(
       moment(nextFeedTime).subtract(10, 'minutes'),
       moment(nextFeedTime).add(10, 'minutes'),
       null,
       '[]',
     )
 
-    if (isWithinRange) {
+    if (feedIsWithinRange) {
       console.log('Balık beslenme zamanı geldi.')
       fish.feedingSchedule.lastFeed = String(formattedTime.value)
       fish.feedingSchedule.feedCount++
@@ -97,7 +96,6 @@ export const useFishPondStore = defineStore('fishPond', () => {
     tooltipData.value = data
   }
 
-  // watch
   watch(currentTime, (newTime) => {
     fishes.value = fishes.value.map((fish) => {
       const now = moment(newTime)

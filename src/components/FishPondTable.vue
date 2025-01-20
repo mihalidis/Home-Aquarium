@@ -40,9 +40,7 @@ const tableData = computed(() =>
     type: fish.type,
     weight: fish.weight,
     image: fish.image,
-    lastFeed: feedTimeText(
-      Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours),
-    ),
+    lastFeed: feedTimeText(Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours)),
     healthStatus: fish.healthStatus,
   })),
 )
@@ -64,7 +62,7 @@ const tableData = computed(() =>
     </el-table-column>
     <el-table-column fixed label="Adı" sortable prop="name" />
     <el-table-column label="Türü" sortable prop="type" />
-    <el-table-column label="Ağırlığı" sortable prop="weight" />
+    <el-table-column label="Ağırlığı (gr)" sortable prop="weight" />
     <el-table-column label="Beslenme" sortable prop="lastFeed" />
     <el-table-column
       prop="healthStatus"

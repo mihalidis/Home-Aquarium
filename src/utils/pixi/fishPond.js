@@ -68,7 +68,7 @@ export async function fishPond(store) {
 
   app.ticker.add((time) => {
     time.speed = store.currentSpeed
-    animateFishes(app, fishList, time)
+    animateFishes(app, fishList, time, store.formattedFishes)
     animateWaterOverlay(app, time)
   })
 }

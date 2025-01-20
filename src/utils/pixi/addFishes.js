@@ -1,11 +1,10 @@
 import { Container, Sprite } from 'pixi.js'
-import { TIME_SPEEDS } from '@/constants/enum'
+import { TIME_SPEEDS, HEALTH_STATUS } from '@/constants/enum'
 import eventBus from '@/utils/eventBus'
 
 export function addFishes(app, fishes, formattedFishes) {
   const fishContainer = new Container()
   app.stage.addChild(fishContainer)
-
   const fishAssets = formattedFishes.map(fish => `fish${fish.id}`)
 
   for (let i = 0; i < formattedFishes.length; i++) {
@@ -24,13 +23,15 @@ export function addFishes(app, fishes, formattedFishes) {
     fish.originalSpeedY = fish.speedY
 
     fish.on('mouseover', () => {
-      fish.speedX = 0
-      fish.speedY = 0
-      const fishPosition = {
-        top: fish.y,
-        left: fish.x,
+      if (formattedFishes[i].healthStatus !== HEALTH_STATUS.DEAD) {
+        fish.speedX = 0
+        fish.speedY = 0
+        const fishPosition = {
+          top: fish.y,
+          left: fish.x,
+        }
+        eventBus.emit('SHOW_TOOL_TIP', { fish: formattedFishes[i], fishPosition })
       }
-      eventBus.emit('SHOW_TOOL_TIP', {fish: formattedFishes[i], fishPosition})
     })
 
     fish.on('mouseout', () => {
@@ -51,7 +52,7 @@ export function addFishes(app, fishes, formattedFishes) {
   }
 }
 
-export function animateFishes(app, fishes, time) {
+export function animateFishes(app, fishes, time, formattedFishes) {
   const padding = 50
   const speedDividers = {
     [TIME_SPEEDS.REAL_TIME]: 1,
@@ -63,20 +64,30 @@ export function animateFishes(app, fishes, time) {
   const speedDivider = speedDividers[time.speed] || 1
   const adjustedSpeed = time.speed / speedDivider
 
-  fishes.forEach((fish) => {
-    let newX = fish.x + fish.speedX * adjustedSpeed
-    let newY = fish.y + fish.speedY * adjustedSpeed
+  fishes.forEach((fish, index) => {
+    if (formattedFishes[index].healthStatus === HEALTH_STATUS.DEAD) {
+      fish.height = 50
+      fish.y -= adjustedSpeed
+      if (fish.y <= 50) {
+        fish.y = 50
+        fish.speedX = 0
+        fish.speedY = 0
+      }
+    } else {
+      let newX = fish.x + fish.speedX * adjustedSpeed
+      let newY = fish.y + fish.speedY * adjustedSpeed
 
-    if (newX < padding || newX > app.screen.width - padding) {
-      fish.speedX *= -1
-      fish.scale.x *= -1
+      if (newX < padding || newX > app.screen.width - padding) {
+        fish.speedX *= -1
+        fish.scale.x *= -1
+      }
+
+      if (newY < padding || newY > app.screen.height - padding) {
+        fish.speedY *= -1
+      }
+
+      fish.x += fish.speedX * adjustedSpeed
+      fish.y += fish.speedY * adjustedSpeed
     }
-
-    if (newY < padding || newY > app.screen.height - padding) {
-      fish.speedY *= -1
-    }
-
-    fish.x += fish.speedX * adjustedSpeed
-    fish.y += fish.speedY * adjustedSpeed
   })
 }
