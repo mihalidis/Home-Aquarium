@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculateTimeDifference, decreaseHealthStatus } from './helper'
+import { calculateTimeDifference, decreaseHealthStatus } from '../utils/helper'
 import { HEALTH_STATUS } from '@/constants/enum'
 import moment from 'moment'
 

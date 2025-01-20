@@ -24,6 +24,7 @@ Akvaryumdaki balıklar kullanıcı tarafından manuel olarak beslenir. Balıklar
 - [Pinia](https://pinia.vuejs.org/)
 - [Pixi.js](https://pixijs.com/)
 - [Element+ UI](https://element-plus.org/en-US/)
+- [Vitest](https://vitest.dev/)
 
 ## Yazar
 
@@ -56,5 +57,5 @@ npm run lint
 ## Test
 
 ```sh
-npx vitest
+npm run test
 ```
