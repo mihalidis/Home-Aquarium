@@ -22,19 +22,23 @@ export function addFishes(app, fishes, formattedFishes) {
     fish.originalSpeedX = fish.speedX
     fish.originalSpeedY = fish.speedY
 
+    let timeoutId;
     fish.on('mouseover', () => {
-      if (formattedFishes[i].healthStatus !== HEALTH_STATUS.DEAD) {
-        fish.speedX = 0
-        fish.speedY = 0
-        const fishPosition = {
-          top: fish.y,
-          left: fish.x,
+      timeoutId = setTimeout(() => {
+        if (formattedFishes[i].healthStatus !== HEALTH_STATUS.DEAD) {
+          fish.speedX = 0
+          fish.speedY = 0
+          const fishPosition = {
+            top: fish.y,
+            left: fish.x,
+          }
+          eventBus.emit('SHOW_TOOL_TIP', { fish: formattedFishes[i], fishPosition })
         }
-        eventBus.emit('SHOW_TOOL_TIP', { fish: formattedFishes[i], fishPosition })
-      }
+      }, 1000)
     })
 
     fish.on('mouseout', () => {
+      clearTimeout(timeoutId)
       fish.speedX = fish.originalSpeedX
       fish.speedY = fish.originalSpeedY
     })
