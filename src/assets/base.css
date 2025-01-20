@@ -60,3 +60,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.el-popper {
+  border-radius: 12px !important;
+  background-color: var(--color-base-background) !important;
+  border: none !important;
+}
+
+.el-popper__arrow {
+  display: none !important;
+}
+
+.el-dropdown-menu {
+  border: 2px solid var(--smoky-black) !important;
+  border-radius: 12px !important;
+  background-color: var(--color-base-background) !important;
+  color: var(--smoky-black) !important;
+  font-weight: 600 !important;
+  width: 110px !important;
+}
+
+.el-dropdown-menu__item:hover,
+.el-dropdown-menu__item:focus
+ {
+  background-color: var(--raisin-black) !important;
+  color: var(--white) !important;
+}

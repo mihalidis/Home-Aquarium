@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { fetchFishes } from '../config/api.js'
 import { TIME_SPEEDS, HEALTH_STATUS } from '@/constants/enum'
+import { decreaseHealthStatus, increaseHealthStatus } from '@/utils/helper.js'
 import moment from 'moment'
 
 export const useFishPondStore = defineStore('fishPond', () => {
@@ -9,11 +10,13 @@ export const useFishPondStore = defineStore('fishPond', () => {
   const isLoading = ref(false)
   const currentTime = ref(moment())
   const speed = ref(TIME_SPEEDS.REAL_TIME)
+  const tooltipData = ref(null)
 
   // getters
   const formattedFishes = computed(() => fishes.value)
   const formattedTime = computed(() => moment(currentTime.value).format('DD.MM.YYYY HH:mm'))
   const currentSpeed = computed(() => speed.value)
+  const currentTooltipData = computed(() => tooltipData.value)
 
   // setters
   const fetchPondFishes = async () => {
@@ -25,6 +28,10 @@ export const useFishPondStore = defineStore('fishPond', () => {
         feedingSchedule: {
           ...fish.feedingSchedule,
           lastFeed: moment(currentTime.value).format('DD.MM.YYYY HH:mm'),
+          nextFeed: moment(currentTime.value).add(fish.feedingSchedule.intervalInHours, 'hours').format('DD.MM.YYYY HH:mm'),
+          feedCount: 1,
+          dailyFeedAmount: fish.weight / 100,
+          dailyFeedCount: 24 / fish.feedingSchedule.intervalInHours
         },
         image: `/src/assets/pixi/fish${fish.id}.png`,
         healthStatus: HEALTH_STATUS.STANDART,
@@ -46,31 +53,46 @@ export const useFishPondStore = defineStore('fishPond', () => {
 
   const feedFish = (fishId) => {
     const fish = fishes.value.find((f) => f.id === fishId)
+    console.log('Balık besleniyor:', fish.name)
     if (!fish) return
 
     const now = moment(currentTime.value)
-    const lastFeed = moment(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
-    const nextFeedTime = lastFeed.add(fish.feedingSchedule.intervalInHours, 'hours')
+    const lastFedTime = moment(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
+    const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hours')
 
-    const timeDifference = now.diff(nextFeedTime, 'minutes')
-    console.log(now.format('DD.MM.YYYY HH:mm'), nextFeedTime.format('DD.MM.YYYY HH:mm'), timeDifference)
-    if (timeDifference >= -10 && timeDifference <= 10) {
-      fish.healthStatus =
-        fish.healthStatus === HEALTH_STATUS.POOR ? HEALTH_STATUS.STANDARD : HEALTH_STATUS.GOOD
-      fish.feedingSchedule.lastFeed = now.format('DD.MM.YYYY HH:mm')
-    } else if (timeDifference > 10) {
-      fish.healthStatus =
-        fish.healthStatus === HEALTH_STATUS.GOOD ? HEALTH_STATUS.STANDARD : HEALTH_STATUS.POOR
-    } else if (timeDifference < -10) {
-      fish.healthStatus =
-        fish.healthStatus === HEALTH_STATUS.GOOD ? HEALTH_STATUS.STANDARD : HEALTH_STATUS.POOR
+    if (fish.feedingSchedule.feedCount > fish.feedingSchedule.dailyFeedCount) {
+      console.log('Balık fazla yemlendi ve durumunu bir kademe düşür.')
+      fish.feedingSchedule.lastFeed = String(formattedTime.value)
+      fish.feedingSchedule.feedCount++
+      fish.feedingSchedule.healthStatus = decreaseHealthStatus(fish.healthStatus)
+      return
     }
 
-    if (fish.healthStatus === HEALTH_STATUS.POOR && timeDifference > 10) {
-      fish.healthStatus = 'dead'
-    }
+    // beslenme anı 10 dakika önce ve 10 dakika sonrası aralığında mı kontrolü
+    const isWithinRange = now.isBetween(
+      moment(nextFeedTime).subtract(10, 'minutes'),
+      moment(nextFeedTime).add(10, 'minutes'),
+      null,
+      '[]',
+    )
 
-    console.log('Balık beslendi:', fish)
+    if (isWithinRange) {
+      console.log('Balık beslenme zamanı geldi.')
+      fish.feedingSchedule.lastFeed = String(formattedTime.value)
+      fish.feedingSchedule.feedCount++
+      fish.healthStatus = increaseHealthStatus(fish.healthStatus)
+      return
+    } else {
+      console.log('Balık beslenme zamanı değil.')
+      fish.feedingSchedule.lastFeed = String(formattedTime.value)
+      fish.feedingSchedule.feedCount++
+      fish.healthStatus = decreaseHealthStatus(fish.healthStatus)
+      return
+    }
+  }
+
+  const setTooltipData = (data) => {
+    tooltipData.value = data
   }
 
   return {
@@ -84,5 +106,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
     currentSpeed,
     setSpeed,
     feedFish,
+    currentTooltipData,
+    setTooltipData,
   }
 })

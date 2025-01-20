@@ -11,7 +11,6 @@ const fishList = []
 
 async function setup() {
   const pondContainer = document.querySelector('.pond-scene')
-  // Container boyutlarını al
   const width = pondContainer.clientWidth
   const height = pondContainer.clientHeight
 
@@ -24,7 +23,7 @@ async function setup() {
     resolution: window.devicePixelRatio,
   })
 
-  pondContainer.textContent = ''
+  app.canvas.style.borderRadius = '12px'
   pondContainer.appendChild(app.canvas)
 }
 
@@ -63,7 +62,7 @@ export async function fishPond(store) {
   watch(() => store.currentSpeed)
 
   addBackground(app)
-  addFishes(app, fishList)
+  addFishes(app, fishList, store.formattedFishes)
   addWaterOverlay(app)
   addDisplacementEffect(app)
 

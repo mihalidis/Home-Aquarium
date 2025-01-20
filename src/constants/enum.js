@@ -10,6 +10,6 @@ export const TIME_SPEEDS = readonly({
 export const HEALTH_STATUS = readonly({
   GOOD: 'iyi',
   STANDART: 'standart',
-  POOR: 'kötü',
+  BAD: 'kötü',
   DEAD: 'ölü',
 })

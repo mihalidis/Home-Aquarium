@@ -47,7 +47,7 @@ onUnmounted(() => {
       {{ formattedTime }}
     </div>
 
-    <el-dropdown @command="updateSpeed">
+    <el-dropdown @command="updateSpeed" trigger="click">
       <div class="el-dropdown-link">
         <span class="speed-label">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -79,6 +79,15 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  background-color: var(--color-background);
+  padding: 16px 2rem 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+  z-index: 2;
 
   .digital-clock {
     display: flex;

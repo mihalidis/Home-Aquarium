@@ -1,19 +1,40 @@
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, useTemplateRef, ref } from 'vue'
 import { useFishPondStore } from '@/stores/fishPondStore'
-import { fishPond } from './utils/pixi/fishPond.js'
+import { fishPond } from '@/utils/pixi/fishPond.js'
+import eventBus from '@/utils/eventBus';
 
 // components
 import FishPondTable from './components/FishPondTable.vue'
 import SpeedTimer from './components/SpeedTimer.vue'
+import FishCard from './components/FishCard.vue'
 
 const store = useFishPondStore()
 
+const show_tooltip = ref(false)
+const tooltipElement = useTemplateRef('tooltipElement')
+
 const showTable = computed(() => !store.isLoading && store.formattedFishes.length > 0)
+
+const handleCloseTooltipModal = () => {
+  show_tooltip.value = false
+  store.setTooltipData(null)
+}
 
 onMounted(async () => {
   await store.fetchPondFishes()
   fishPond(store)
+
+  eventBus.on('SHOW_TOOL_TIP', (data) => {
+    const shouldShowTooltip = (!store.currentTooltipData && tooltipElement.value && store.currentTooltipData?.id !== data.fish.id);
+
+    if (shouldShowTooltip) {
+      store.setTooltipData(data.fish);
+      tooltipElement.value.style.top = `${data.fishPosition.top}px`;
+      tooltipElement.value.style.left = `${data.fishPosition.left}px`;
+      show_tooltip.value = true;
+    }
+  });
 })
 </script>
 
@@ -25,14 +46,18 @@ onMounted(async () => {
       src="/src/assets/pixi/fish-pond-background.png"
       alt="fish pond background"
     />
-    <div class="pond-scene" />
+    <div class="pond-scene">
+      <div ref="tooltipElement" v-show="show_tooltip" class="tooltip">
+        <FishCard v-if="store.currentTooltipData" :fish="store.currentTooltipData" @close="handleCloseTooltipModal" />
+      </div>
+    </div>
   </div>
   <div v-if="showTable" class="fish-pond-table-wrapper">
     <FishPondTable />
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .pond-wrapper {
   position: relative;
   width: 1200px;
@@ -52,5 +77,18 @@ onMounted(async () => {
   width: 1130px;
   height: 388px;
   border-radius: 18px;
+
+  canvas {
+    border-radius: 18px;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
 }
 </style>

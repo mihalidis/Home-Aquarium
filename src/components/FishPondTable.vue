@@ -17,7 +17,7 @@ const healthStatusColor = (status) => {
       return 'success'
     case HEALTH_STATUS.STANDART:
       return 'warning'
-    case HEALTH_STATUS.POOR:
+    case HEALTH_STATUS.BAD:
       return 'danger'
     case HEALTH_STATUS.DEAD:
       return 'info'
@@ -44,7 +44,10 @@ const tableData = computed(() =>
     name: fish.name,
     type: fish.type,
     weight: fish.weight,
-    lastFeed: feedTimeText(Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours)),
+    image: fish.image,
+    lastFeed: feedTimeText(
+      Math.round(calculateTimeDifference(currentTime.value, fish.feedingSchedule.lastFeed).hours),
+    ),
     healthStatus: fish.healthStatus,
   })),
 )
@@ -57,7 +60,14 @@ const tableData = computed(() =>
     :data="tableData"
     style="width: 100%"
   >
-    <el-table-column label="Adı" sortable prop="name" />
+  <el-table-column class-name="image-cell"
+                  fixed
+                  :width="43">
+      <template #default="{ row }">
+        <img :src="row.image" :alt="row.name" class="fish-image" />
+      </template>
+    </el-table-column>
+    <el-table-column fixed label="Adı" sortable prop="name" />
     <el-table-column label="Türü" sortable prop="type" />
     <el-table-column label="Ağırlığı" sortable prop="weight" />
     <el-table-column label="Beslenme" sortable prop="lastFeed" />
@@ -67,18 +77,16 @@ const tableData = computed(() =>
       :filters="[
         { text: HEALTH_STATUS.GOOD, value: HEALTH_STATUS.GOOD },
         { text: HEALTH_STATUS.STANDART, value: HEALTH_STATUS.STANDART },
-        { text: HEALTH_STATUS.POOR, value: HEALTH_STATUS.POOR },
-        { text: HEALTH_STATUS.DEAD, value: HEALTH_STATUS.DEAD }
+        { text: HEALTH_STATUS.BAD, value: HEALTH_STATUS.BAD },
+        { text: HEALTH_STATUS.DEAD, value: HEALTH_STATUS.DEAD },
       ]"
       :filter-method="filterHealthStatus"
       filter-placement="bottom-end"
     >
       <template #default="scope">
-        <el-tag
-          :type="healthStatusColor(scope.row.healthStatus)"
-          disable-transitions
-          >{{ scope.row.healthStatus }}</el-tag
-        >
+        <el-tag :type="healthStatusColor(scope.row.healthStatus)" disable-transitions>{{
+          scope.row.healthStatus
+        }}</el-tag>
       </template>
     </el-table-column>
     <el-table-column label="İşlem">
@@ -122,6 +130,11 @@ const tableData = computed(() =>
 
   tr {
     &.fish-rows {
+      .fish-image {
+        width: 30px;
+        object-fit: cover;
+      }
+
       td {
         background-color: var(--color-table-background);
         color: var(--smoky-black);

@@ -1,15 +1,15 @@
 import { Container, Sprite } from 'pixi.js'
 import { TIME_SPEEDS } from '@/constants/enum'
+import eventBus from '@/utils/eventBus'
 
-export function addFishes(app, fishes) {
+export function addFishes(app, fishes, formattedFishes) {
   const fishContainer = new Container()
   app.stage.addChild(fishContainer)
 
-  const fishCount = 5
-  const fishAssets = ['fish1', 'fish2', 'fish3', 'fish4', 'fish5']
+  const fishAssets = formattedFishes.map(fish => `fish${fish.id}`)
 
-  for (let i = 0; i < fishCount; i++) {
-    const fishAsset = fishAssets[i % fishAssets.length]
+  for (let i = 0; i < formattedFishes.length; i++) {
+    const fishAsset = fishAssets[i]
     const fish = Sprite.from(fishAsset)
     fish.anchor.set(0.5)
 
@@ -26,6 +26,11 @@ export function addFishes(app, fishes) {
     fish.on('mouseover', () => {
       fish.speedX = 0
       fish.speedY = 0
+      const fishPosition = {
+        top: fish.y,
+        left: fish.x,
+      }
+      eventBus.emit('SHOW_TOOL_TIP', {fish: formattedFishes[i], fishPosition})
     })
 
     fish.on('mouseout', () => {
