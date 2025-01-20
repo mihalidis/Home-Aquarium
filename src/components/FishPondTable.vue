@@ -7,10 +7,6 @@ import { HEALTH_STATUS } from '@/constants/enum'
 const store = useFishPondStore()
 const { formattedFishes, feedFish } = store
 
-const filterHealthStatus = (value, row) => {
-  return row.healthStatus === value
-}
-
 const healthStatusColor = (status) => {
   switch (status) {
     case HEALTH_STATUS.GOOD:
@@ -74,14 +70,7 @@ const tableData = computed(() =>
     <el-table-column
       prop="healthStatus"
       label="Sağlık"
-      :filters="[
-        { text: HEALTH_STATUS.GOOD, value: HEALTH_STATUS.GOOD },
-        { text: HEALTH_STATUS.STANDART, value: HEALTH_STATUS.STANDART },
-        { text: HEALTH_STATUS.BAD, value: HEALTH_STATUS.BAD },
-        { text: HEALTH_STATUS.DEAD, value: HEALTH_STATUS.DEAD },
-      ]"
-      :filter-method="filterHealthStatus"
-      filter-placement="bottom-end"
+      sortable
     >
       <template #default="scope">
         <el-tag :type="healthStatusColor(scope.row.healthStatus)" disable-transitions>{{
