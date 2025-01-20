@@ -31,6 +31,7 @@ const store = useFishPondStore()
     <div class="fish-details">
       <div class="tooltip-text"><span>Son Beslenme:</span> {{ fish.feedingSchedule.lastFeed }}</div>
       <div class="tooltip-text"><span>Gelecek Beslenme:</span> {{ fish.feedingSchedule.nextFeed }}</div>
+      <div class="tooltip-text"><span>Beslenme Aralığı:</span> {{ fish.feedingSchedule.intervalInHours }} saat</div>
     </div>
     <div class="tooltip-footer">
       <el-button class="tooltip-footer-btn" type="primary" size="mini" @click="store.feedFish(fish.id)">Besle</el-button>
