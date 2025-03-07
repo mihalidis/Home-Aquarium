@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { TIME_SPEEDS } from '@/constants/enum'
 import { useFishPondStore } from '@/stores/fishPondStore'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const store = useFishPondStore()
 const pondSpeedInterval = ref(null)
@@ -21,7 +21,7 @@ const resetPondSpeedInterval = () => {
 
   pondSpeedInterval.value = setInterval(() => {
     const secondsToAdd = store.currentSpeed / 10
-    store.updateTime(moment(store.currentTime).add(secondsToAdd, 'seconds'))
+    store.updateTime(dayjs(store.currentTime).add(secondsToAdd, 'second'))
   }, 100)
 }
 

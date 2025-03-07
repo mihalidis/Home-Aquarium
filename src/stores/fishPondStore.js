@@ -3,18 +3,21 @@ import { defineStore } from 'pinia'
 import { fetchFishes } from '../config/api.js'
 import { TIME_SPEEDS, HEALTH_STATUS } from '@/constants/enum'
 import { decreaseHealthStatus, increaseHealthStatus } from '@/utils/helper.js'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+
+dayjs.extend(isBetween)
 
 export const useFishPondStore = defineStore('fishPond', () => {
   const fishes = ref([])
   const isLoading = ref(false)
-  const currentTime = ref(moment())
+  const currentTime = ref(dayjs())
   const speed = ref(TIME_SPEEDS.REAL_TIME)
   const tooltipData = ref(null)
 
   // getters
   const formattedFishes = computed(() => fishes.value)
-  const formattedTime = computed(() => moment(currentTime.value).format('DD.MM.YYYY HH:mm'))
+  const formattedTime = computed(() => dayjs(currentTime.value).format('DD.MM.YYYY HH:mm'))
   const currentSpeed = computed(() => speed.value)
   const currentTooltipData = computed(() => tooltipData.value)
 
@@ -27,9 +30,9 @@ export const useFishPondStore = defineStore('fishPond', () => {
         ...fish,
         feedingSchedule: {
           ...fish.feedingSchedule,
-          lastFeed: moment(currentTime.value).format('DD.MM.YYYY HH:mm'),
-          nextFeed: moment(currentTime.value)
-            .add(fish.feedingSchedule.intervalInHours, 'hours')
+          lastFeed: dayjs(currentTime.value).format('DD.MM.YYYY HH:mm'),
+          nextFeed: dayjs(currentTime.value)
+            .add(fish.feedingSchedule.intervalInHours, 'hour')
             .format('DD.MM.YYYY HH:mm'),
           feedCount: 1,
           dailyFeedAmount: fish.weight / 100,
@@ -58,9 +61,9 @@ export const useFishPondStore = defineStore('fishPond', () => {
 
     if (!fish) return
 
-    const now = moment(currentTime.value)
-    const lastFedTime = moment(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
-    const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hours')
+    const now = dayjs(currentTime.value)
+    const lastFedTime = dayjs(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
+    const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hour')
 
     if (fish.feedingSchedule.feedCount > fish.feedingSchedule.dailyFeedCount) {
       updateFishFeedingSchedule(fish)
@@ -69,8 +72,8 @@ export const useFishPondStore = defineStore('fishPond', () => {
     }
 
     const feedIsWithinRange = now.isBetween(
-      moment(nextFeedTime).subtract(10, 'minutes'),
-      moment(nextFeedTime).add(10, 'minutes'),
+      dayjs(nextFeedTime).subtract(10, 'minute'),
+      dayjs(nextFeedTime).add(10, 'minute'),
       null,
       '[]',
     )
@@ -97,11 +100,11 @@ export const useFishPondStore = defineStore('fishPond', () => {
 
   watch(currentTime, (newTime) => {
     fishes.value = fishes.value.map((fish) => {
-      const now = moment(newTime)
-      const lastFedTime = moment(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
-      const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hours')
+      const now = dayjs(newTime)
+      const lastFedTime = dayjs(fish.feedingSchedule.lastFeed, 'DD.MM.YYYY HH:mm')
+      const nextFeedTime = lastFedTime.add(fish.feedingSchedule.intervalInHours, 'hour')
 
-      if (now.isAfter(moment(nextFeedTime).add(10, 'minutes')) && fish.healthStatus !== HEALTH_STATUS.DEAD) {
+      if (now.isAfter(dayjs(nextFeedTime).add(10, 'minute')) && fish.healthStatus !== HEALTH_STATUS.DEAD) {
         return {
           ...fish,
           healthStatus: decreaseHealthStatus(fish.healthStatus),
