@@ -55,7 +55,7 @@ export async function createFishPond(store) {
 
   sound.play('waterAmbience', {
     loop: true,
-    volume: 0.4,
+    volume: 0.08,
   })
 
   addBackground(app)
