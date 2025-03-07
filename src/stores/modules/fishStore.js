@@ -37,7 +37,7 @@ export const useFishStore = defineStore('fish', () => {
           dailyFeedAmount: calculateDailyFeedAmount(fish.weight),
           dailyFeedCount: calculateDailyFeedCount(fish.feedingSchedule.intervalInHours),
         },
-        image: `/assets/pixi/fish${fish.id}.png`,
+        image: fish.id === 1 ? '/assets/pixi/fish1.png' : `/assets/pixi/Fish${fish.id}.png`,
         healthStatus: HEALTH_STATUS.STANDART,
       }))
     } catch (error) {

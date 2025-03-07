@@ -39,10 +39,21 @@ async function preload(store) {
     { alias: 'waterAmbience', src: '/assets/pixi/aquarium-sound.mp3' },
   ]
 
-  const fishAssets = formattedFishes.map((fish, index) => ({
-    alias: `fish${index + 1}`,
-    src: index > 4 ? '/assets/pixi/default_fish.png' : `/assets/pixi/fish${fish.id}.png`,
-  }))
+  const fishAssets = formattedFishes.map((fish, index) => {
+    let imagePath;
+    if (index > 4) {
+      imagePath = '/assets/pixi/default_fish.png';
+    } else if (fish.id === 1) {
+      imagePath = '/assets/pixi/fish1.png';
+    } else {
+      imagePath = `/assets/pixi/Fish${fish.id}.png`;
+    }
+    
+    return {
+      alias: `fish${index + 1}`,
+      src: imagePath,
+    };
+  })
 
   assets.push(...fishAssets)
 
