@@ -30,18 +30,18 @@ async function preload(store) {
   const { formattedFishes } = store
 
   const assets = [
-    { alias: 'background', src: '/src/assets/pixi/inside-pond.png' },
+    { alias: 'background', src: '/assets/pixi/inside-pond.png' },
     { alias: 'overlay', src: 'https://pixijs.com/assets/tutorials/fish-pond/wave_overlay.png' },
     {
       alias: 'displacement',
       src: 'https://pixijs.com/assets/tutorials/fish-pond/displacement_map.png',
     },
-    { alias: 'waterAmbience', src: '/src/assets/pixi/aquarium-sound.mp3' },
+    { alias: 'waterAmbience', src: '/assets/pixi/aquarium-sound.mp3' },
   ]
 
   const fishAssets = formattedFishes.map((fish, index) => ({
     alias: `fish${index + 1}`,
-    src: index > 4 ? '/src/assets/pixi/default_fish.png' : fish.image,
+    src: index > 4 ? '/assets/pixi/default_fish.png' : fish.image,
   }))
 
   assets.push(...fishAssets)
