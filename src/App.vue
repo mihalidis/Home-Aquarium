@@ -43,7 +43,7 @@ onMounted(async () => {
   <div class="pond-wrapper">
     <img
       class="akvaryum"
-      src="/src/assets/pixi/fish-pond-background.png"
+      src="/assets/pixi/fish-pond-background.png"
       alt="fish pond background"
     />
     <div class="pond-scene">

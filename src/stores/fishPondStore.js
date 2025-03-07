@@ -38,7 +38,7 @@ export const useFishPondStore = defineStore('fishPond', () => {
           dailyFeedAmount: fish.weight / 100,
           dailyFeedCount: 24 / fish.feedingSchedule.intervalInHours,
         },
-        image: `/src/assets/pixi/fish${fish.id}.png`,
+        image: `/assets/pixi/fish${fish.id}.png`,
         healthStatus: HEALTH_STATUS.STANDART,
       }))
     } catch (error) {

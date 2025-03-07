@@ -41,7 +41,7 @@ async function preload(store) {
 
   const fishAssets = formattedFishes.map((fish, index) => ({
     alias: `fish${index + 1}`,
-    src: index > 4 ? '/assets/pixi/default_fish.png' : fish.image,
+    src: index > 4 ? '/assets/pixi/default_fish.png' : `/assets/pixi/fish${fish.id}.png`,
   }))
 
   assets.push(...fishAssets)
