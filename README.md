@@ -1,4 +1,3 @@
-### 2f65509b2eee2392b2c8ae27330f0eb7
 # Akvaryum Takibi Uygulaması
   ![](https://i.ibb.co/HzH5p2S/HOME-AQUARIUM.png)
   
