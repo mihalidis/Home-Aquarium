@@ -58,9 +58,13 @@ const tableData = computed(() =>
         <img :src="row.image" :alt="row.name" class="fish-image" />
       </template>
     </el-table-column>
+
     <el-table-column fixed label="Adı" sortable prop="name" />
+
     <el-table-column label="Türü" sortable prop="type" />
+
     <el-table-column label="Ağırlığı (gr)" sortable prop="weight" />
+
     <el-table-column label="Beslenme" sortable prop="lastFeed" />
     <el-table-column
       prop="healthStatus"
@@ -73,6 +77,7 @@ const tableData = computed(() =>
         }}</el-tag>
       </template>
     </el-table-column>
+    
     <el-table-column label="İşlem">
       <template #default="scope">
         <el-button size="small" :disabled="scope.row.healthStatus === HEALTH_STATUS.DEAD" @click="handleFeedFish(scope.$index, scope.row)"> Besle </el-button>
